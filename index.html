@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Consumiciones Pro</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f4f9;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 750px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #0002;
+}
+h1 {
+    text-align: center;
+    color: #17365d;
+}
+h2 {
+    color: #24527a;
+}
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+}
+button {
+    border: none;
+    padding: 14px;
+    border-radius: 9px;
+    background: #1769aa;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background: #104c80;
+}
+.producto {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.producto button {
+    min-height: 65px;
+}
+.total {
+    margin-top: 25px;
+    padding: 20px;
+    background: #e8f3ff;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+#lista {
+    padding-left: 20px;
+}
+.eliminar {
+    background: #c0392b;
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 13px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Calculadora de Consumiciones Pro</h1>
+
+<h2>Consumiciones</h2>
+<div class="productos">
+    <div class="producto">
+        <button onclick="agregar('Café',1.50)">Café<br>1,50 €</button>
+    </div>
+    <div class="producto">
+        <button onclick="agregar('Refresco',2)">Refresco<br>2,00 €</button>
+    </div>
+    <div class="producto">
+        <button onclick="agregar('Cerveza',2.50)">Cerveza<br>2,50 €</button>
+    </div>
+    <div class="producto">
+        <button onclick="agregar('Agua',1)">Agua<br>1,00 €</button>
+    </div>
+    <div class="producto">
+        <button onclick="agregar('Copa',6)">Copa<br>6,00 €</button>
+    </div>
+    <div class="producto">
+        <button onclick="agregar('Bocadillo',4)">Bocadillo<br>4,00 €</button>
+    </div>
+</div>
+
+<h2>Detalle de consumiciones</h2>
+<ul id="lista"></ul>
+
+<div class="total">
+    TOTAL: <span id="total">0,00 €</span>
+</div>
+
+<button onclick="reiniciar()" style="background:#c0392b;width:100%;margin-top:15px">
+    Reiniciar cuenta
+</button>
+</div>
+
+<script>
+let consumiciones = [];
+let total = 0;
+
+function agregar(nombre, precio) {
+    consumiciones.push({nombre, precio});
+    total += precio;
+    actualizar();
+}
+
+function actualizar() {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    consumiciones.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item.nombre + " - " +
+            item.precio.toFixed(2).replace(".", ",") + " €";
+
+        const boton = document.createElement("button");
+        boton.textContent = "Eliminar";
+        boton.className = "eliminar";
+        boton.onclick = () => eliminar(index);
+
+        li.appendChild(boton);
+        lista.appendChild(li);
+    });
+
+    document.getElementById("total").textContent =
+        total.toFixed(2).replace(".", ",") + " €";
+}
+
+function eliminar(index) {
+    total -= consumiciones[index].precio;
+    consumiciones.splice(index, 1);
+    actualizar();
+}
+
+function reiniciar() {
+    consumiciones = [];
+    total = 0;
+    actualizar();
+}
+</script>
+</body>
+</html>
