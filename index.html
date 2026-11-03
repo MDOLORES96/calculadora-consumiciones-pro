@@ -3,156 +3,570 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calculadora de Consumiciones Pro</title>
 <style>
+:root {
+  --blue: #1769aa;
+  --dark: #17365d;
+  --bg: #eef2f7;
+  --green: #16834a;
+  --red: #c0392b;
+}
+* { box-sizing: border-box; }
 body {
-    font-family: Arial, sans-serif;
-    background: #f1f4f9;
-    margin: 0;
-    padding: 20px;
+  margin: 0;
+  padding: 16px;
+  background: var(--bg);
+  font-family: Arial, sans-serif;
+  color: #243247;
 }
 .container {
-    max-width: 750px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px #0002;
+  max-width: 950px;
+  margin: auto;
+  background: white;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px #0001;
 }
-h1 {
-    text-align: center;
-    color: #17365d;
+header { text-align: center; }
+h1 { color: var(--dark); margin: 8px 0; }
+.subtitle { color: #68788b; margin-bottom: 20px; }
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
 }
-h2 {
-    color: #24527a;
+.summary-card {
+  padding: 18px;
+  border-radius: 12px;
+  background: #e8f3ff;
+  text-align: center;
 }
-.productos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 12px;
+.summary-card strong {
+  display: block;
+  font-size: 28px;
+  color: var(--dark);
+  margin-top: 8px;
+}
+h2 { color: var(--dark); font-size: 19px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+}
+.product {
+  border: 1px solid #dce3eb;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
+.product button.add {
+  width: 100%;
+  min-height: 85px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 5px;
+  cursor: pointer;
+}
+.product button.add:active { transform: scale(.98); }
+.product-name {
+  display: block;
+  font-size: 17px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+.product-price {
+  display: block;
+  margin-top: 7px;
+  font-size: 15px;
+}
+.product-count {
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+.product-subtotal { color: #16834a; }
+.product-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
 }
 button {
-    border: none;
-    padding: 14px;
-    border-radius: 9px;
-    background: #1769aa;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-size: 14px;
 }
-button:hover {
-    background: #104c80;
+.minus { background: #fce8e6; color: var(--red); }
+.secondary { background: #e8edf3; color: #26394f; }
+.primary { background: var(--blue); color: white; }
+.danger { background: var(--red); color: white; }
+.success { background: var(--green); color: white; }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0;
 }
-.producto {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.actions button { flex: 1; min-width: 140px; }
+.panel {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f6f8fb;
+  border-radius: 12px;
 }
-.producto button {
-    min-height: 65px;
+.editor-row {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 10px;
+  margin: 10px 0;
 }
-.total {
-    margin-top: 25px;
-    padding: 20px;
-    background: #e8f3ff;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 25px;
-    font-weight: bold;
+input {
+  min-width: 0;
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font-size: 15px;
 }
-#lista {
-    padding-left: 20px;
+.hidden { display: none; }
+.history-item {
+  background: white;
+  padding: 12px;
+  border-radius: 9px;
+  margin: 10px 0;
+  border: 1px solid #e0e5eb;
 }
-.eliminar {
-    background: #c0392b;
-    padding: 5px 10px;
-    margin-left: 10px;
-    font-size: 13px;
+.history-item summary { cursor: pointer; font-weight: bold; }
+.history-detail { padding-top: 10px; line-height: 1.7; }
+.muted { color: #68788b; font-size: 13px; }
+.notice {
+  background: #fff5dc;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-top: 15px;
+}
+@media(max-width:480px) {
+  body { padding: 8px; }
+  .container { padding: 13px; }
+  .products { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .summary-card strong { font-size: 23px; }
 }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>Calculadora de Consumiciones Pro</h1>
 
-<h2>Consumiciones</h2>
-<div class="productos">
-    <div class="producto">
-        <button onclick="agregar('Café',1.50)">Café<br>1,50 €</button>
-    </div>
-    <div class="producto">
-        <button onclick="agregar('Refresco',2)">Refresco<br>2,00 €</button>
-    </div>
-    <div class="producto">
-        <button onclick="agregar('Cerveza',2.50)">Cerveza<br>2,50 €</button>
-    </div>
-    <div class="producto">
-        <button onclick="agregar('Agua',1)">Agua<br>1,00 €</button>
-    </div>
-    <div class="producto">
-        <button onclick="agregar('Copa',6)">Copa<br>6,00 €</button>
-    </div>
-    <div class="producto">
-        <button onclick="agregar('Bocadillo',4)">Bocadillo<br>4,00 €</button>
-    </div>
+<header>
+  <h1>🍹 Consumiciones Pro</h1>
+  <div class="subtitle">Control de ventas y caja diaria</div>
+  <div id="date"></div>
+</header>
+
+<div class="summary">
+  <div class="summary-card">
+    Unidades vendidas
+    <strong id="units">0</strong>
+  </div>
+  <div class="summary-card">
+    Total de la jornada
+    <strong id="total">0,00 €</strong>
+  </div>
 </div>
 
-<h2>Detalle de consumiciones</h2>
-<ul id="lista"></ul>
+<h2>Productos y consumiciones</h2>
+<div class="products" id="products"></div>
 
-<div class="total">
-    TOTAL: <span id="total">0,00 €</span>
+<div class="actions">
+  <button class="secondary" onclick="toggleEditor()">
+    ⚙️ Configurar 12 botones
+  </button>
+  <button class="secondary" onclick="undoLast()">
+    ↩ Deshacer última venta
+  </button>
+  <button class="danger" onclick="closeDay()">
+    🔒 Cerrar jornada
+  </button>
 </div>
 
-<button onclick="reiniciar()" style="background:#c0392b;width:100%;margin-top:15px">
-    Reiniciar cuenta
-</button>
+<div class="panel hidden" id="editor">
+  <h2>Configuración de productos</h2>
+  <p class="muted">
+    Cambia el nombre y el precio de cada botón.
+    Los cambios no alteran las ventas ya realizadas.
+  </p>
+  <div id="editorRows"></div>
+  <div class="actions">
+    <button class="success" onclick="saveProducts()">Guardar productos</button>
+    <button class="secondary" onclick="toggleEditor()">Cancelar</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Historial de jornadas</h2>
+  <div id="history"></div>
+</div>
+
+<div class="notice">
+  <strong>Importante:</strong> Los datos se guardan automáticamente
+  en este navegador y en este dispositivo. No se sincronizan
+  con otros dispositivos. No borres los datos del navegador.
+</div>
+
 </div>
 
 <script>
-let consumiciones = [];
-let total = 0;
+const STORAGE_KEY = "consumiciones_pro_v2";
 
-function agregar(nombre, precio) {
-    consumiciones.push({nombre, precio});
-    total += precio;
-    actualizar();
+function defaultProducts() {
+  return Array.from({length:12}, (_,i) => ({
+    name: "Producto " + (i+1),
+    price: 0
+  }));
 }
 
-function actualizar() {
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
+function newDay() {
+  return {
+    startedAt: new Date().toISOString(),
+    counts: Array(12).fill(0),
+    sales: []
+  };
+}
 
-    consumiciones.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.textContent = item.nombre + " - " +
-            item.precio.toFixed(2).replace(".", ",") + " €";
+function initialState() {
+  return {
+    products: defaultProducts(),
+    current: newDay(),
+    history: []
+  };
+}
 
-        const boton = document.createElement("button");
-        boton.textContent = "Eliminar";
-        boton.className = "eliminar";
-        boton.onclick = () => eliminar(index);
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return initialState();
 
-        li.appendChild(boton);
-        lista.appendChild(li);
+    const data = JSON.parse(saved);
+
+    if (!Array.isArray(data.products) ||
+        data.products.length !== 12 ||
+        !data.current ||
+        !Array.isArray(data.current.counts) ||
+        !Array.isArray(data.history)) {
+      return initialState();
+    }
+
+    data.current.counts = Array.from(
+      {length:12},
+      (_,i) => Math.max(0, Number(data.current.counts[i]) || 0)
+    );
+
+    data.current.sales = Array.isArray(data.current.sales)
+      ? data.current.sales : [];
+
+    return data;
+  } catch (error) {
+    alert("No se pudieron leer los datos guardados. No continúes si necesitas recuperar datos anteriores.");
+    return initialState();
+  }
+}
+
+let state = loadState();
+let lastSaleId = null;
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
+  } catch(error) {
+    alert("No se pudieron guardar los datos. Comprueba el espacio disponible del navegador.");
+    return false;
+  }
+}
+
+function money(value) {
+  return (value / 100).toLocaleString("es-ES", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }) + " €";
+}
+
+function totalCents() {
+  return state.products.reduce((sum,p,i) =>
+    sum + Math.round(Number(p.price) * 100) *
+    state.current.counts[i], 0);
+}
+
+function totalUnits() {
+  return state.current.counts.reduce((sum,n) => sum+n, 0);
+}
+
+function render() {
+  document.getElementById("date").textContent =
+    "Jornada iniciada: " +
+    new Date(state.current.startedAt).toLocaleString("es-ES");
+
+  document.getElementById("units").textContent = totalUnits();
+  document.getElementById("total").textContent = money(totalCents());
+
+  const products = document.getElementById("products");
+  products.innerHTML = "";
+
+  state.products.forEach((p,i) => {
+    const price = Math.round(Number(p.price)*100);
+    const count = state.current.counts[i];
+
+    const card = document.createElement("div");
+    card.className = "product";
+
+    const add = document.createElement("button");
+    add.className = "add";
+    add.innerHTML =
+      '<span class="product-name"></span>' +
+      '<span class="product-price"></span>';
+    add.querySelector(".product-name").textContent =
+      p.name || "Producto " + (i+1);
+    add.querySelector(".product-price").textContent = money(price);
+    add.onclick = () => addSale(i);
+
+    const quantity = document.createElement("div");
+    quantity.className = "product-count";
+    quantity.textContent = "Unidades: " + count;
+
+    const subtotal = document.createElement("div");
+    subtotal.className = "product-subtotal";
+    subtotal.textContent = "Importe: " + money(price*count);
+
+    const actions = document.createElement("div");
+    actions.className = "product-actions";
+
+    const minus = document.createElement("button");
+    minus.className = "minus";
+    minus.textContent = "− 1";
+    minus.disabled = count === 0;
+    minus.onclick = () => removeSale(i);
+
+    actions.appendChild(minus);
+    card.append(add,quantity,subtotal,actions);
+    products.appendChild(card);
+  });
+
+  renderHistory();
+}
+
+function addSale(index) {
+  const p = state.products[index];
+  const sale = {
+    id: Date.now() + "-" + Math.random(),
+    product: p.name,
+    price: Math.round(Number(p.price)*100),
+    index: index,
+    time: new Date().toISOString()
+  };
+
+  state.current.counts[index]++;
+  state.current.sales.push(sale);
+  lastSaleId = sale.id;
+
+  if (save()) render();
+}
+
+function removeSale(index) {
+  if (state.current.counts[index] <= 0) return;
+
+  const sales = state.current.sales;
+  let position = -1;
+
+  for(let i=sales.length-1;i>=0;i--) {
+    if(sales[i].index === index) {
+      position = i;
+      break;
+    }
+  }
+
+  if(position !== -1) {
+    sales.splice(position,1);
+  }
+
+  state.current.counts[index]--;
+
+  if (save()) render();
+}
+
+function undoLast() {
+  const sales = state.current.sales;
+
+  if (!sales.length) {
+    alert("Todavía no hay ventas que deshacer.");
+    return;
+  }
+
+  const sale = sales.pop();
+  state.current.counts[sale.index]--;
+  lastSaleId = null;
+
+  if (save()) render();
+}
+
+function toggleEditor() {
+  const editor = document.getElementById("editor");
+  const opening = editor.classList.contains("hidden");
+
+  if(opening) {
+    renderEditor();
+    editor.classList.remove("hidden");
+  } else {
+    editor.classList.add("hidden");
+  }
+}
+
+function renderEditor() {
+  const rows = document.getElementById("editorRows");
+  rows.innerHTML = "";
+
+  state.products.forEach((p,i) => {
+    const row = document.createElement("div");
+    row.className = "editor-row";
+
+    const name = document.createElement("input");
+    name.type = "text";
+    name.maxLength = 35;
+    name.id = "name" + i;
+    name.value = p.name;
+    name.placeholder = "Nombre del producto";
+
+    const price = document.createElement("input");
+    price.type = "number";
+    price.min = "0";
+    price.max = "999999";
+    price.step = "0.01";
+    price.id = "price" + i;
+    price.value = Number(p.price).toFixed(2);
+    price.placeholder = "Precio";
+
+    row.append(name,price);
+    rows.appendChild(row);
+  });
+}
+
+function saveProducts() {
+  const updated = [];
+
+  for(let i=0;i<12;i++) {
+    const name = document.getElementById("name"+i).value.trim();
+    const price = Number(document.getElementById("price"+i).value);
+
+    if(!name) {
+      alert("El botón " + (i+1) + " necesita un nombre.");
+      return;
+    }
+
+    if(!Number.isFinite(price) || price < 0 || price > 999999) {
+      alert("Revisa el precio del botón " + (i+1) + ".");
+      return;
+    }
+
+    updated.push({
+      name: name,
+      price: Math.round(price*100)/100
+    });
+  }
+
+  const previous = state.products;
+  state.products = updated;
+
+  if(save()) {
+    document.getElementById("editor").classList.add("hidden");
+    render();
+    alert("Los 12 productos se han guardado correctamente.");
+  } else {
+    state.products = previous;
+  }
+}
+
+function closeDay() {
+  if(totalUnits() === 0) {
+    alert("No hay ventas registradas. No hace falta cerrar una jornada vacía.");
+    return;
+  }
+
+  const total = money(totalCents());
+  const ok = confirm(
+    "¿Quieres cerrar esta jornada?\n\n" +
+    "Unidades: " + totalUnits() + "\n" +
+    "Recaudación: " + total + "\n\n" +
+    "La jornada se archivará y comenzará una nueva."
+  );
+
+  if(!ok) return;
+
+  const archived = {
+    date: state.current.startedAt,
+    closedAt: new Date().toISOString(),
+    products: state.products.map(p => ({...p})),
+    counts: [...state.current.counts],
+    sales: [...state.current.sales],
+    units: totalUnits(),
+    total: totalCents()
+  };
+
+  state.history.unshift(archived);
+  state.current = newDay();
+
+  if(save()) {
+    render();
+    alert("Jornada cerrada correctamente. ¡Nueva jornada preparada!");
+  }
+}
+
+function renderHistory() {
+  const container = document.getElementById("history");
+  container.innerHTML = "";
+
+  if(!state.history.length) {
+    container.textContent = "Todavía no hay jornadas cerradas.";
+    return;
+  }
+
+  state.history.forEach((day,index) => {
+    const details = document.createElement("details");
+    details.className = "history-item";
+
+    const summary = document.createElement("summary");
+    summary.textContent =
+      new Date(day.date).toLocaleDateString("es-ES") +
+      " — " + day.units + " unidades — " + money(day.total);
+
+    const body = document.createElement("div");
+    body.className = "history-detail";
+
+    const heading = document.createElement("div");
+    heading.textContent =
+      "Cierre: " + new Date(day.closedAt).toLocaleString("es-ES");
+    body.appendChild(heading);
+
+    day.counts.forEach((count,i) => {
+      if(count === 0) return;
+
+      const product = day.products[i];
+      const line = document.createElement("div");
+      line.textContent =
+        product.name + ": " + count + " unidades — " +
+        money(Math.round(product.price*100)*count);
+      body.appendChild(line);
     });
 
-    document.getElementById("total").textContent =
-        total.toFixed(2).replace(".", ",") + " €";
+    details.append(summary,body);
+    container.appendChild(details);
+  });
 }
 
-function eliminar(index) {
-    total -= consumiciones[index].precio;
-    consumiciones.splice(index, 1);
-    actualizar();
-}
-
-function reiniciar() {
-    consumiciones = [];
-    total = 0;
-    actualizar();
-}
+render();
 </script>
 </body>
 </html>
