@@ -3,567 +3,564 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Calculadora de Consumiciones Pro</title>
 <style>
-:root {
-  --blue: #1769aa;
-  --dark: #17365d;
-  --bg: #eef2f7;
-  --green: #16834a;
-  --red: #c0392b;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  padding: 16px;
-  background: var(--bg);
-  font-family: Arial, sans-serif;
-  color: #243247;
-}
-.container {
-  max-width: 950px;
-  margin: auto;
-  background: white;
-  padding: 22px;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px #0001;
-}
-header { text-align: center; }
-h1 { color: var(--dark); margin: 8px 0; }
-.subtitle { color: #68788b; margin-bottom: 20px; }
-.summary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin: 20px 0;
-}
-.summary-card {
-  padding: 18px;
-  border-radius: 12px;
-  background: #e8f3ff;
-  text-align: center;
-}
-.summary-card strong {
-  display: block;
-  font-size: 28px;
-  color: var(--dark);
-  margin-top: 8px;
-}
-h2 { color: var(--dark); font-size: 19px; }
-.products {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 12px;
-}
-.product {
-  border: 1px solid #dce3eb;
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-}
-.product button.add {
-  width: 100%;
-  min-height: 85px;
-  background: var(--blue);
-  color: white;
-  border: none;
-  border-radius: 9px;
-  padding: 10px 5px;
-  cursor: pointer;
-}
-.product button.add:active { transform: scale(.98); }
-.product-name {
-  display: block;
-  font-size: 17px;
-  font-weight: bold;
-  overflow-wrap: anywhere;
-}
-.product-price {
-  display: block;
-  margin-top: 7px;
-  font-size: 15px;
-}
-.product-count {
-  margin: 10px 0 5px;
-  font-weight: bold;
-}
-.product-subtotal { color: #16834a; }
-.product-actions {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-}
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 13px;
-  font-size: 14px;
-}
-.minus { background: #fce8e6; color: var(--red); }
-.secondary { background: #e8edf3; color: #26394f; }
-.primary { background: var(--blue); color: white; }
-.danger { background: var(--red); color: white; }
-.success { background: var(--green); color: white; }
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 22px 0;
-}
-.actions button { flex: 1; min-width: 140px; }
-.panel {
-  margin-top: 20px;
-  padding: 16px;
-  background: #f6f8fb;
-  border-radius: 12px;
-}
-.editor-row {
-  display: grid;
-  grid-template-columns: 1fr 110px;
-  gap: 10px;
-  margin: 10px 0;
-}
-input {
-  min-width: 0;
-  width: 100%;
-  padding: 11px;
-  border: 1px solid #cbd5e1;
-  border-radius: 7px;
-  font-size: 15px;
-}
-.hidden { display: none; }
-.history-item {
-  background: white;
-  padding: 12px;
-  border-radius: 9px;
-  margin: 10px 0;
-  border: 1px solid #e0e5eb;
-}
-.history-item summary { cursor: pointer; font-weight: bold; }
-.history-detail { padding-top: 10px; line-height: 1.7; }
-.muted { color: #68788b; font-size: 13px; }
-.notice {
-  background: #fff5dc;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  margin-top: 15px;
-}
-@media(max-width:480px) {
-  body { padding: 8px; }
-  .container { padding: 13px; }
-  .products { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .summary-card strong { font-size: 23px; }
+*{box-sizing:border-box}
+body{margin:0;padding:12px;background:#eef2f7;font-family:Arial;color:#243247}
+.container{max-width:950px;margin:auto;background:white;padding:20px;border-radius:15px}
+h1,h2{color:#17365d}
+h1{text-align:center;font-size:25px}
+.subtitle{text-align:center;color:#68788b}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.product{border:1px solid #dce3eb;padding:9px;border-radius:10px;text-align:center}
+.product button{width:100%;min-height:75px;background:#1769aa;color:white;font-size:16px}
+.product button:disabled{opacity:.5}
+button{border:0;border-radius:8px;padding:12px;cursor:pointer;font-size:14px}
+.product button,.primary{background:#1769aa;color:white}
+.secondary{background:#e8edf3;color:#243247}
+.danger{background:#c0392b;color:white}
+.success{background:#16834a;color:white}
+button:disabled{opacity:.45;cursor:not-allowed}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.box{background:#e8f3ff;padding:15px;border-radius:10px;text-align:center}
+.big{display:block;font-size:25px;font-weight:bold;margin-top:7px;color:#17365d}
+.panel{background:#f6f8fb;padding:15px;border-radius:11px;margin-top:18px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:10px 0}
+input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font-size:17px}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.actions button{flex:1}
+.editor-row{display:grid;grid-template-columns:1fr 110px;gap:8px;margin:9px 0}
+.history-item{background:white;border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px}
+.hidden{display:none}
+.notice{background:#fff4d6;padding:12px;border-radius:8px;font-size:13px;margin-top:15px}
+.muted{font-size:13px;color:#68788b}
+.ticket-line{padding:9px 0;border-bottom:1px solid #ddd}
+@media(max-width:480px){
+ .container{padding:12px}
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .big{font-size:22px}
 }
 </style>
 </head>
 <body>
 <div class="container">
 
-<header>
-  <h1>🍹 Consumiciones Pro</h1>
-  <div class="subtitle">Control de ventas y caja diaria</div>
-  <div id="date"></div>
-</header>
+<h1>🍹 Consumiciones Pro</h1>
+<div class="subtitle">Control de ventas y caja diaria</div>
+<div class="subtitle" id="date"></div>
 
 <div class="summary">
-  <div class="summary-card">
-    Unidades vendidas
-    <strong id="units">0</strong>
-  </div>
-  <div class="summary-card">
-    Total de la jornada
-    <strong id="total">0,00 €</strong>
-  </div>
+ <div class="box">Unidades vendidas hoy
+  <span class="big" id="units">0</span>
+ </div>
+ <div class="box">Recaudación diaria
+  <span class="big" id="dailyTotal">0,00 €</span>
+ </div>
 </div>
 
-<h2>Productos y consumiciones</h2>
-<div class="products" id="products"></div>
+<h2>1. Seleccionar consumiciones</h2>
+<div class="grid" id="products"></div>
 
-<div class="actions">
-  <button class="secondary" onclick="toggleEditor()">
-    ⚙️ Configurar 12 botones
-  </button>
-  <button class="secondary" onclick="undoLast()">
-    ↩ Deshacer última venta
-  </button>
-  <button class="danger" onclick="closeDay()">
-    🔒 Cerrar jornada
-  </button>
-</div>
+<div class="panel">
+ <h2>2. Cuenta del cliente actual</h2>
+ <div id="ticket"></div>
+ <div class="row">
+  <strong>CANTIDAD A COBRAR</strong>
+  <strong class="big" id="due">0,00 €</strong>
+ </div>
 
-<div class="panel hidden" id="editor">
-  <h2>Configuración de productos</h2>
-  <p class="muted">
-    Cambia el nombre y el precio de cada botón.
-    Los cambios no alteran las ventas ya realizadas.
-  </p>
-  <div id="editorRows"></div>
-  <div class="actions">
-    <button class="success" onclick="saveProducts()">Guardar productos</button>
-    <button class="secondary" onclick="toggleEditor()">Cancelar</button>
-  </div>
+ <label for="received"><strong>3. Dinero entregado por el cliente (€)</strong></label>
+ <input id="received" type="number" min="0" step="0.01"
+        placeholder="Ejemplo: 20,00" inputmode="decimal">
+
+ <div class="row">
+  <strong>CANTIDAD A DEVOLVER</strong>
+  <strong class="big" id="change">0,00 €</strong>
+ </div>
+ <div id="paymentMessage" class="muted">
+  Introduce el dinero recibido.
+ </div>
+
+ <div class="actions">
+  <button class="success" id="confirm" onclick="confirmPayment()">
+   ✓ CONFIRMAR COBRO
+  </button>
+  <button class="secondary" onclick="clearTicket()">
+   Vaciar cuenta
+  </button>
+ </div>
 </div>
 
 <div class="panel">
-  <h2>Historial de jornadas</h2>
-  <div id="history"></div>
+ <h2>4. Configuración de los 12 botones</h2>
+ <button class="secondary" onclick="toggleEditor()">
+  ⚙️ Configurar productos y precios
+ </button>
+ <div id="editor" class="hidden">
+  <p class="muted">Modifica los nombres y precios. Los cambios no alteran ventas anteriores ni la cuenta abierta.</p>
+  <div id="editorRows"></div>
+  <button class="primary" onclick="saveProducts()">Guardar configuración</button>
+ </div>
+</div>
+
+<div class="panel">
+ <h2>5. Historial de cobros de hoy</h2>
+ <div id="payments"></div>
+</div>
+
+<div class="panel">
+ <h2>6. Historial de jornadas</h2>
+ <div id="history"></div>
+</div>
+
+<div class="actions">
+ <button class="danger" onclick="closeDay()">🔒 CERRAR JORNADA</button>
 </div>
 
 <div class="notice">
-  <strong>Importante:</strong> Los datos se guardan automáticamente
-  en este navegador y en este dispositivo. No se sincronizan
-  con otros dispositivos. No borres los datos del navegador.
+ Los datos se guardan en este navegador y dispositivo.
+ No se comparten con otros dispositivos. No borres los datos
+ del navegador ni desinstales sus datos si quieres conservar
+ el historial.
 </div>
 
 </div>
 
 <script>
-const STORAGE_KEY = "consumiciones_pro_v2";
+const KEY = "consumiciones_pro_v3";
 
-function defaultProducts() {
-  return Array.from({length:12}, (_,i) => ({
-    name: "Producto " + (i+1),
-    price: 0
-  }));
+function defaults(){
+ return Array.from({length:12},(_,i)=>({
+  name:"Producto "+(i+1),price:0
+ }));
 }
 
-function newDay() {
-  return {
-    startedAt: new Date().toISOString(),
-    counts: Array(12).fill(0),
-    sales: []
-  };
+function newDay(){
+ return {
+  startedAt:new Date().toISOString(),
+  counts:Array(12).fill(0),
+  payments:[]
+ };
 }
 
-function initialState() {
-  return {
-    products: defaultProducts(),
-    current: newDay(),
-    history: []
-  };
+function initial(){
+ return {
+  products:defaults(),
+  current:newDay(),
+  history:[]
+ };
 }
 
-function loadState() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return initialState();
+function load(){
+ try{
+  const raw=localStorage.getItem(KEY);
+  if(!raw)return initial();
+  const data=JSON.parse(raw);
 
-    const data = JSON.parse(saved);
-
-    if (!Array.isArray(data.products) ||
-        data.products.length !== 12 ||
-        !data.current ||
-        !Array.isArray(data.current.counts) ||
-        !Array.isArray(data.history)) {
-      return initialState();
-    }
-
-    data.current.counts = Array.from(
-      {length:12},
-      (_,i) => Math.max(0, Number(data.current.counts[i]) || 0)
-    );
-
-    data.current.sales = Array.isArray(data.current.sales)
-      ? data.current.sales : [];
-
-    return data;
-  } catch (error) {
-    alert("No se pudieron leer los datos guardados. No continúes si necesitas recuperar datos anteriores.");
-    return initialState();
-  }
-}
-
-let state = loadState();
-let lastSaleId = null;
-
-function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    return true;
-  } catch(error) {
-    alert("No se pudieron guardar los datos. Comprueba el espacio disponible del navegador.");
-    return false;
-  }
-}
-
-function money(value) {
-  return (value / 100).toLocaleString("es-ES", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }) + " €";
-}
-
-function totalCents() {
-  return state.products.reduce((sum,p,i) =>
-    sum + Math.round(Number(p.price) * 100) *
-    state.current.counts[i], 0);
-}
-
-function totalUnits() {
-  return state.current.counts.reduce((sum,n) => sum+n, 0);
-}
-
-function render() {
-  document.getElementById("date").textContent =
-    "Jornada iniciada: " +
-    new Date(state.current.startedAt).toLocaleString("es-ES");
-
-  document.getElementById("units").textContent = totalUnits();
-  document.getElementById("total").textContent = money(totalCents());
-
-  const products = document.getElementById("products");
-  products.innerHTML = "";
-
-  state.products.forEach((p,i) => {
-    const price = Math.round(Number(p.price)*100);
-    const count = state.current.counts[i];
-
-    const card = document.createElement("div");
-    card.className = "product";
-
-    const add = document.createElement("button");
-    add.className = "add";
-    add.innerHTML =
-      '<span class="product-name"></span>' +
-      '<span class="product-price"></span>';
-    add.querySelector(".product-name").textContent =
-      p.name || "Producto " + (i+1);
-    add.querySelector(".product-price").textContent = money(price);
-    add.onclick = () => addSale(i);
-
-    const quantity = document.createElement("div");
-    quantity.className = "product-count";
-    quantity.textContent = "Unidades: " + count;
-
-    const subtotal = document.createElement("div");
-    subtotal.className = "product-subtotal";
-    subtotal.textContent = "Importe: " + money(price*count);
-
-    const actions = document.createElement("div");
-    actions.className = "product-actions";
-
-    const minus = document.createElement("button");
-    minus.className = "minus";
-    minus.textContent = "− 1";
-    minus.disabled = count === 0;
-    minus.onclick = () => removeSale(i);
-
-    actions.appendChild(minus);
-    card.append(add,quantity,subtotal,actions);
-    products.appendChild(card);
-  });
-
-  renderHistory();
-}
-
-function addSale(index) {
-  const p = state.products[index];
-  const sale = {
-    id: Date.now() + "-" + Math.random(),
-    product: p.name,
-    price: Math.round(Number(p.price)*100),
-    index: index,
-    time: new Date().toISOString()
-  };
-
-  state.current.counts[index]++;
-  state.current.sales.push(sale);
-  lastSaleId = sale.id;
-
-  if (save()) render();
-}
-
-function removeSale(index) {
-  if (state.current.counts[index] <= 0) return;
-
-  const sales = state.current.sales;
-  let position = -1;
-
-  for(let i=sales.length-1;i>=0;i--) {
-    if(sales[i].index === index) {
-      position = i;
-      break;
-    }
+  if(!Array.isArray(data.products)||data.products.length!==12||
+     !data.current||!Array.isArray(data.history)){
+    return initial();
   }
 
-  if(position !== -1) {
-    sales.splice(position,1);
+  if(!Array.isArray(data.current.counts)||
+     !Array.isArray(data.current.payments)){
+    return initial();
   }
 
-  state.current.counts[index]--;
-
-  if (save()) render();
+  return data;
+ }catch(e){
+  alert("Error leyendo los datos guardados.");
+  return initial();
+ }
 }
 
-function undoLast() {
-  const sales = state.current.sales;
+let state=load();
+let cart=Array(12).fill(0);
 
-  if (!sales.length) {
-    alert("Todavía no hay ventas que deshacer.");
-    return;
-  }
-
-  const sale = sales.pop();
-  state.current.counts[sale.index]--;
-  lastSaleId = null;
-
-  if (save()) render();
+function save(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(state));
+  return true;
+ }catch(e){
+  alert("No se pudieron guardar los datos. Comprueba el espacio del navegador.");
+  return false;
+ }
 }
 
-function toggleEditor() {
-  const editor = document.getElementById("editor");
-  const opening = editor.classList.contains("hidden");
-
-  if(opening) {
-    renderEditor();
-    editor.classList.remove("hidden");
-  } else {
-    editor.classList.add("hidden");
-  }
+function cents(value){
+ return Math.round(Number(value)*100);
 }
 
-function renderEditor() {
-  const rows = document.getElementById("editorRows");
-  rows.innerHTML = "";
-
-  state.products.forEach((p,i) => {
-    const row = document.createElement("div");
-    row.className = "editor-row";
-
-    const name = document.createElement("input");
-    name.type = "text";
-    name.maxLength = 35;
-    name.id = "name" + i;
-    name.value = p.name;
-    name.placeholder = "Nombre del producto";
-
-    const price = document.createElement("input");
-    price.type = "number";
-    price.min = "0";
-    price.max = "999999";
-    price.step = "0.01";
-    price.id = "price" + i;
-    price.value = Number(p.price).toFixed(2);
-    price.placeholder = "Precio";
-
-    row.append(name,price);
-    rows.appendChild(row);
-  });
+function money(value){
+ return (value/100).toLocaleString("es-ES",{
+  minimumFractionDigits:2,maximumFractionDigits:2
+ })+" €";
 }
 
-function saveProducts() {
-  const updated = [];
-
-  for(let i=0;i<12;i++) {
-    const name = document.getElementById("name"+i).value.trim();
-    const price = Number(document.getElementById("price"+i).value);
-
-    if(!name) {
-      alert("El botón " + (i+1) + " necesita un nombre.");
-      return;
-    }
-
-    if(!Number.isFinite(price) || price < 0 || price > 999999) {
-      alert("Revisa el precio del botón " + (i+1) + ".");
-      return;
-    }
-
-    updated.push({
-      name: name,
-      price: Math.round(price*100)/100
-    });
-  }
-
-  const previous = state.products;
-  state.products = updated;
-
-  if(save()) {
-    document.getElementById("editor").classList.add("hidden");
-    render();
-    alert("Los 12 productos se han guardado correctamente.");
-  } else {
-    state.products = previous;
-  }
+function cartTotal(){
+ return state.products.reduce((sum,p,i)=>
+  sum+cents(p.price)*cart[i],0);
 }
 
-function closeDay() {
-  if(totalUnits() === 0) {
-    alert("No hay ventas registradas. No hace falta cerrar una jornada vacía.");
-    return;
-  }
+function dayTotal(){
+ return state.current.payments.reduce((sum,p)=>sum+p.total,0);
+}
 
-  const total = money(totalCents());
-  const ok = confirm(
-    "¿Quieres cerrar esta jornada?\n\n" +
-    "Unidades: " + totalUnits() + "\n" +
-    "Recaudación: " + total + "\n\n" +
-    "La jornada se archivará y comenzará una nueva."
+function dayUnits(){
+ return state.current.counts.reduce((sum,n)=>sum+n,0);
+}
+
+function render(){
+ document.getElementById("date").textContent=
+  "Jornada iniciada: "+new Date(state.current.startedAt).toLocaleString("es-ES");
+
+ document.getElementById("units").textContent=dayUnits();
+ document.getElementById("dailyTotal").textContent=money(dayTotal());
+
+ const products=document.getElementById("products");
+ products.innerHTML="";
+
+ state.products.forEach((p,i)=>{
+  const card=document.createElement("div");
+  card.className="product";
+
+  const button=document.createElement("button");
+  button.innerHTML="<strong></strong><br><span></span>";
+  button.querySelector("strong").textContent=p.name;
+  button.querySelector("span").textContent=money(cents(p.price));
+  button.onclick=()=>addProduct(i);
+
+  card.appendChild(button);
+  products.appendChild(card);
+ });
+
+ renderTicket();
+ renderPayments();
+ renderHistory();
+}
+
+function addProduct(i){
+ cart[i]++;
+ renderTicket();
+}
+
+function removeProduct(i){
+ if(cart[i]>0)cart[i]--;
+ renderTicket();
+}
+
+function renderTicket(){
+ const ticket=document.getElementById("ticket");
+ ticket.innerHTML="";
+
+ let found=false;
+
+ state.products.forEach((p,i)=>{
+  if(!cart[i])return;
+  found=true;
+
+  const line=document.createElement("div");
+  line.className="ticket-line";
+
+  const text=document.createElement("span");
+  text.textContent=p.name+" × "+cart[i]+" — "+
+   money(cents(p.price)*cart[i]);
+
+  const minus=document.createElement("button");
+  minus.className="secondary";
+  minus.textContent="−";
+  minus.style.marginLeft="8px";
+  minus.onclick=()=>removeProduct(i);
+
+  line.append(text,minus);
+  ticket.appendChild(line);
+ });
+
+ if(!found){
+  ticket.textContent="Todavía no hay consumiciones seleccionadas.";
+ }
+
+ const total=cartTotal();
+ document.getElementById("due").textContent=money(total);
+ updateChange();
+}
+
+function updateChange(){
+ const receivedInput=document.getElementById("received");
+ const received=Number(receivedInput.value);
+ const due=cartTotal();
+ const receivedCents=Number.isFinite(received)?cents(received):0;
+
+ const change=Math.max(0,receivedCents-due);
+ document.getElementById("change").textContent=money(change);
+
+ const message=document.getElementById("paymentMessage");
+ const confirm=document.getElementById("confirm");
+
+ if(due===0){
+  message.textContent="Añade productos para iniciar el cobro.";
+  confirm.disabled=true;
+ }else if(receivedInput.value===""||!Number.isFinite(received)){
+  message.textContent="Introduce el dinero recibido.";
+  confirm.disabled=true;
+ }else if(receivedCents<due){
+  message.textContent="Faltan "+money(due-receivedCents)+" para completar el pago.";
+  confirm.disabled=true;
+ }else{
+  message.textContent="Importe suficiente. Puedes confirmar el cobro.";
+  confirm.disabled=false;
+ }
+}
+
+document.getElementById("received").addEventListener("input",updateChange);
+
+function clearTicket(){
+ if(!cart.some(n=>n>0))return;
+ if(!confirm("¿Vaciar la cuenta de este cliente?"))return;
+
+ cart=Array(12).fill(0);
+ document.getElementById("received").value="";
+ renderTicket();
+}
+
+function confirmPayment(){
+ const total=cartTotal();
+ const input=document.getElementById("received");
+ const received=cents(input.value);
+
+ if(total<=0||!Number.isFinite(received)||received<total){
+  alert("Comprueba el importe y el dinero recibido.");
+  return;
+ }
+
+ const lines=[];
+ state.products.forEach((p,i)=>{
+  if(cart[i]>0){
+   lines.push({
+    name:p.name,
+    price:cents(p.price),
+    quantity:cart[i]
+   });
+  }
+ });
+
+ const payment={
+  date:new Date().toISOString(),
+  lines:lines,
+  total:total,
+  received:received,
+  change:received-total
+ };
+
+ lines.forEach(line=>{
+  const index=state.products.findIndex(p=>p.name===line.name);
+  // Se suman las cantidades por la posición original.
+  const originalIndex=state.products.findIndex((p,i)=>
+   p.name===line.name && cart[i]>0 &&
+   state.current.counts[i]!==undefined
   );
+ });
 
-  if(!ok) return;
+ state.current.payments.push(payment);
+ state.products.forEach((p,i)=>{
+  state.current.counts[i]+=cart[i];
+ });
 
-  const archived = {
-    date: state.current.startedAt,
-    closedAt: new Date().toISOString(),
-    products: state.products.map(p => ({...p})),
-    counts: [...state.current.counts],
-    sales: [...state.current.sales],
-    units: totalUnits(),
-    total: totalCents()
-  };
+ if(!save()){
+  state.current.payments.pop();
+  state.products.forEach((p,i)=>{
+   state.current.counts[i]-=cart[i];
+  });
+  return;
+ }
 
-  state.history.unshift(archived);
-  state.current = newDay();
+ alert("Cobro registrado correctamente.\nCambio: "+money(received-total));
 
-  if(save()) {
-    render();
-    alert("Jornada cerrada correctamente. ¡Nueva jornada preparada!");
-  }
+ cart=Array(12).fill(0);
+ input.value="";
+ render();
 }
 
-function renderHistory() {
-  const container = document.getElementById("history");
-  container.innerHTML = "";
+function toggleEditor(){
+ const editor=document.getElementById("editor");
+ const opening=editor.classList.contains("hidden");
 
-  if(!state.history.length) {
-    container.textContent = "Todavía no hay jornadas cerradas.";
-    return;
+ if(opening){
+  renderEditor();
+  editor.classList.remove("hidden");
+ }else{
+  editor.classList.add("hidden");
+ }
+}
+
+function renderEditor(){
+ const rows=document.getElementById("editorRows");
+ rows.innerHTML="";
+
+ state.products.forEach((p,i)=>{
+  const row=document.createElement("div");
+  row.className="editor-row";
+
+  const name=document.createElement("input");
+  name.id="name"+i;
+  name.maxLength=35;
+  name.value=p.name;
+
+  const price=document.createElement("input");
+  price.id="price"+i;
+  price.type="number";
+  price.min="0";
+  price.max="999999";
+  price.step="0.01";
+  price.value=Number(p.price).toFixed(2);
+
+  row.append(name,price);
+  rows.appendChild(row);
+ });
+}
+
+function saveProducts(){
+ const updated=[];
+
+ for(let i=0;i<12;i++){
+  const name=document.getElementById("name"+i).value.trim();
+  const price=Number(document.getElementById("price"+i).value);
+
+  if(!name||!Number.isFinite(price)||price<0||price>999999){
+   alert("Revisa el nombre y precio del botón "+(i+1)+".");
+   return;
   }
 
-  state.history.forEach((day,index) => {
-    const details = document.createElement("details");
-    details.className = "history-item";
+  updated.push({name,price:Math.round(price*100)/100});
+ }
 
-    const summary = document.createElement("summary");
-    summary.textContent =
-      new Date(day.date).toLocaleDateString("es-ES") +
-      " — " + day.units + " unidades — " + money(day.total);
+ const old=state.products;
+ state.products=updated;
 
-    const body = document.createElement("div");
-    body.className = "history-detail";
+ if(save()){
+  document.getElementById("editor").classList.add("hidden");
+  render();
+  alert("Configuración guardada.");
+ }else{
+  state.products=old;
+ }
+}
 
-    const heading = document.createElement("div");
-    heading.textContent =
-      "Cierre: " + new Date(day.closedAt).toLocaleString("es-ES");
-    body.appendChild(heading);
+function renderPayments(){
+ const box=document.getElementById("payments");
+ box.innerHTML="";
 
-    day.counts.forEach((count,i) => {
-      if(count === 0) return;
+ if(!state.current.payments.length){
+  box.textContent="Todavía no se han confirmado cobros.";
+  return;
+ }
 
-      const product = day.products[i];
-      const line = document.createElement("div");
-      line.textContent =
-        product.name + ": " + count + " unidades — " +
-        money(Math.round(product.price*100)*count);
-      body.appendChild(line);
-    });
+ state.current.payments.slice().reverse().forEach((p,i)=>{
+  const item=document.createElement("details");
+  item.className="history-item";
 
-    details.append(summary,body);
-    container.appendChild(details);
+  const summary=document.createElement("summary");
+  summary.textContent="Cobro "+
+   (state.current.payments.length-i)+" — "+
+   money(p.total)+" — "+
+   new Date(p.date).toLocaleTimeString("es-ES");
+
+  const body=document.createElement("div");
+  body.className="history-detail";
+
+  p.lines.forEach(line=>{
+   const row=document.createElement("div");
+   row.textContent=line.name+" × "+line.quantity+
+    " — "+money(line.price*line.quantity);
+   body.appendChild(row);
   });
+
+  const received=document.createElement("p");
+  received.textContent="Entregado: "+money(p.received);
+
+  const change=document.createElement("p");
+  change.textContent="Devuelto: "+money(p.change);
+
+  body.append(received,change);
+  item.append(summary,body);
+  box.appendChild(item);
+ });
+}
+
+function closeDay(){
+ if(cart.some(n=>n>0)){
+  alert("Primero debes completar o vaciar la cuenta del cliente actual.");
+  return;
+ }
+
+ if(!state.current.payments.length){
+  alert("No hay cobros registrados para cerrar.");
+  return;
+ }
+
+ const ok=confirm(
+  "¿Cerrar la jornada?\n\n"+
+  "Cobros: "+state.current.payments.length+
+  "\nUnidades: "+dayUnits()+
+  "\nRecaudación: "+money(dayTotal())+
+  "\n\nLa jornada quedará archivada."
+ );
+
+ if(!ok)return;
+
+ const archived={
+  startedAt:state.current.startedAt,
+  closedAt:new Date().toISOString(),
+  products:state.products.map(p=>({...p})),
+  counts:[...state.current.counts],
+  payments:state.current.payments.map(p=>({...p,lines:p.lines.map(l=>({...l}))})),
+  units:dayUnits(),
+  total:dayTotal()
+ };
+
+ state.history.unshift(archived);
+ state.current=newDay();
+
+ if(save()){
+  cart=Array(12).fill(0);
+  document.getElementById("received").value="";
+  render();
+  alert("Jornada cerrada. Ya puedes empezar una nueva.");
+ }
+}
+
+function renderHistory(){
+ const box=document.getElementById("history");
+ box.innerHTML="";
+
+ if(!state.history.length){
+  box.textContent="Todavía no hay jornadas cerradas.";
+  return;
+ }
+
+ state.history.forEach((day,i)=>{
+  const item=document.createElement("details");
+  item.className="history-item";
+
+  const summary=document.createElement("summary");
+  summary.textContent=new Date(day.startedAt).toLocaleDateString("es-ES")+
+   " — "+day.units+" unidades — "+money(day.total);
+
+  const body=document.createElement("div");
+  body.className="history-detail";
+
+  day.payments.forEach((p,index)=>{
+   const line=document.createElement("div");
+   line.textContent="Cobro "+(index+1)+" — "+
+    new Date(p.date).toLocaleTimeString("es-ES")+
+    " — "+money(p.total);
+   body.appendChild(line);
+  });
+
+  item.append(summary,body);
+  box.appendChild(item);
+ });
 }
 
 render();
